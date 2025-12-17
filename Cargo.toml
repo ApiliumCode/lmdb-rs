@@ -1,21 +1,19 @@
 [package]
-name = "lmdb-rkv"
-# NB: When modifying, also modify html_root_url in lib.rs
-version = "0.14.1"
-authors = ["Dan Burkert <dan@danburkert.com>", "Victor Porof <vporof@mozilla.com>"]
+name = "aingle-lmdb"
+version = "0.1.0"
+authors = ["Apilium Technologies <hello@apilium.com>"]
 license = "Apache-2.0"
-description = "Idiomatic and safe LMDB wrapper."
-documentation = "https://docs.rs/lmdb-rkv"
-homepage = "https://github.com/mozilla/lmdb-rs"
-repository = "https://github.com/mozilla/lmdb-rs.git"
+description = "Idiomatic and safe LMDB wrapper for AIngle"
+documentation = "https://docs.rs/aingle-lmdb"
+homepage = "https://apilium.com"
+repository = "https://github.com/ApiliumCode/lmdb-rs"
 readme = "README.md"
-keywords = ["LMDB", "database", "storage-engine", "bindings", "library"]
+keywords = ["aingle", "lmdb", "database", "storage-engine"]
 categories = ["database"]
 edition = "2021"
-rust-version = "1.70"
+rust-version = "1.89"
 
 exclude = [
-  # Exclude CI config files from package.
   "/.appveyor.yml",
   "/.travis.yml",
   "/azure-pipelines-template.yml",
@@ -23,31 +21,16 @@ exclude = [
 ]
 
 [lib]
-name = "lmdb"
-
-[badges]
-travis-ci = { repository = "mozilla/lmdb-rs" }
-appveyor = { repository = "mozilla/lmdb-rs" }
+name = "aingle_lmdb"
 
 [workspace]
-members = [
-  "lmdb-sys",
-]
+members = ["lmdb-sys"]
 
 [dependencies]
 bitflags = "2.6"
 byteorder = "1.5"
 libc = "0.2"
-
-# In order to ensure that we test lmdb-rkv in CI against the in-tree version
-# of lmdb-rkv-sys, we specify the dependency as a path here.
-#
-# But we can't publish the lmdb-rkv crate to crates.io with a path dependency,
-# so we have to temporarily change this to point to the current version
-# of lmdb-rkv-sys on crates.io when publishing lmdb-rkv to that crate registry.
-#
-# (See "Publishing to crates.io" in README.md for more information.)
-lmdb-rkv-sys = { path = "./lmdb-sys" }
+aingle-lmdb-sys = { version = "0.1", path = "./lmdb-sys" }
 
 [dev-dependencies]
 rand = "0.8"
@@ -55,6 +38,6 @@ tempfile = "3.14"
 
 [features]
 default = []
-with-asan = ["lmdb-rkv-sys/with-asan"]
-with-fuzzer = ["lmdb-rkv-sys/with-fuzzer"]
-with-fuzzer-no-link = ["lmdb-rkv-sys/with-fuzzer-no-link"]
+with-asan = ["aingle-lmdb-sys/with-asan"]
+with-fuzzer = ["aingle-lmdb-sys/with-fuzzer"]
+with-fuzzer-no-link = ["aingle-lmdb-sys/with-fuzzer-no-link"]

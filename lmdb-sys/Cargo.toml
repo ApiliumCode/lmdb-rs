@@ -1,28 +1,22 @@
 [package]
-name = "lmdb-rkv-sys"
-# NB: When modifying, also modify html_root_url in lib.rs
-version = "0.11.1"
-authors = ["Dan Burkert <dan@danburkert.com>", "Victor Porof <vporof@mozilla.com>"]
+name = "aingle-lmdb-sys"
+version = "0.1.0"
+authors = ["Apilium Technologies <hello@apilium.com>"]
 license = "Apache-2.0"
-description = "Rust bindings for liblmdb."
-documentation = "https://docs.rs/lmdb-rkv-sys"
-homepage = "https://github.com/mozilla/lmdb-rs"
-repository = "https://github.com/mozilla/lmdb-rs.git"
+description = "Rust FFI bindings for LMDB - optimized for AIngle"
+documentation = "https://docs.rs/aingle-lmdb-sys"
+homepage = "https://apilium.com"
+repository = "https://github.com/ApiliumCode/lmdb-rs"
 readme = "../README.md"
-keywords = ["LMDB", "database", "storage-engine", "bindings", "library"]
+keywords = ["aingle", "lmdb", "database", "storage-engine", "bindings"]
 categories = ["database", "external-ffi-bindings"]
 edition = "2021"
-rust-version = "1.70"
+rust-version = "1.89"
 
-# NB: Use "--features bindgen" to generate bindings.
 build = "build.rs"
 
 [lib]
-name = "lmdb_sys"
-
-[badges]
-travis-ci = { repository = "mozilla/lmdb-rs" }
-appveyor = { repository = "mozilla/lmdb-rs" }
+name = "aingle_lmdb_sys"
 
 [dependencies]
 libc = "0.2"
@@ -38,16 +32,7 @@ with-asan = []
 with-fuzzer = []
 with-fuzzer-no-link = []
 
-# These features configure the MDB_IDL_LOGN macro, which determines
-# the size of the free and dirty page lists (and thus the amount of memory
-# allocated when opening an LMDB environment in read-write mode).
-#
-# Each feature defines MDB_IDL_LOGN as the value in the name of the feature.
-# That means these features are mutually exclusive, and you must not specify
-# more than one at the same time (or the crate will fail to compile).
-#
-# For more information on the motivation for these features (and their effect),
-# see https://github.com/mozilla/lmdb/pull/2.
+# MDB_IDL_LOGN configuration for page list sizes
 mdb_idl_logn_8 = []
 mdb_idl_logn_9 = []
 mdb_idl_logn_10 = []

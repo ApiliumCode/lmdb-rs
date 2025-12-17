@@ -4,7 +4,7 @@
 #![deny(missing_docs)]
 #![doc(html_root_url = "https://docs.rs/lmdb-rkv/0.14.1")]
 
-use lmdb_sys as ffi;
+use aingle_lmdb_sys as ffi;
 
 pub use crate::cursor::{
     Cursor,
