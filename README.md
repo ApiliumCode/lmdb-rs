@@ -1,53 +1,116 @@
-[![Build Status](https://travis-ci.org/mozilla/lmdb-rs.svg?branch=master)](https://travis-ci.org/mozilla/lmdb-rs)
-[![Windows Build status](https://ci.appveyor.com/api/projects/status/id69kkymorycld55/branch/master?svg=true)](https://ci.appveyor.com/project/mykmelez/lmdb-rs-rrsb3/branch/master)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/ApiliumCode/aingle/main/assets/aingle.svg" alt="AIngle Logo" width="200"/>
+</p>
 
-# lmdb-rs
+<h1 align="center">lmdb-rs-apilium</h1>
 
-Idiomatic and safe APIs for interacting with the
-[Symas Lightning Memory-Mapped Database (LMDB)](http://symas.com/mdb/).
+<p align="center">
+  <strong>Rust bindings for LMDB - optimized for AIngle</strong>
+</p>
 
-This repo is a fork of [danburkert/lmdb-rs](https://github.com/danburkert/lmdb-rs)
-with fixes for issues encountered by [mozilla/rkv](https://github.com/mozilla/rkv).
+<p align="center">
+  <a href="https://crates.io/crates/lmdb-rkv"><img src="https://img.shields.io/crates/v/lmdb-rkv.svg" alt="Crates.io"/></a>
+  <a href="https://docs.rs/lmdb-rkv"><img src="https://docs.rs/lmdb-rkv/badge.svg" alt="Documentation"/></a>
+  <a href="https://github.com/ApiliumCode/lmdb-rs-apilium/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0-blue.svg" alt="License"/></a>
+  <a href="https://github.com/ApiliumCode/lmdb-rs-apilium/actions"><img src="https://github.com/ApiliumCode/lmdb-rs-apilium/workflows/CI/badge.svg" alt="CI Status"/></a>
+</p>
+
+---
+
+## Overview
+
+Idiomatic and safe Rust APIs for interacting with the [Symas Lightning Memory-Mapped Database (LMDB)](http://symas.com/mdb/). This fork is optimized for use within the AIngle distributed systems framework.
+
+## Features
+
+- **Memory-mapped I/O** - Direct memory access for high performance
+- **ACID transactions** - Full transaction support with MVCC
+- **Zero-copy reads** - Access data directly without copying
+- **Nested transactions** - Hierarchical transaction support
+- **Cursors** - Efficient iteration over key-value pairs
+- **Cross-platform** - Linux, macOS, Windows support
+
+## Installation
+
+```toml
+[dependencies]
+lmdb-rkv = "0.1"
+```
+
+## Quick Start
+
+```rust
+use lmdb::{Environment, Database, WriteFlags};
+use std::path::Path;
+
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    // Open environment
+    let env = Environment::new()
+        .set_max_dbs(1)
+        .open(Path::new("./data"))?;
+
+    // Open database
+    let db = env.open_db(None)?;
+
+    // Write transaction
+    {
+        let mut txn = env.begin_rw_txn()?;
+        txn.put(db, b"key", b"value", WriteFlags::empty())?;
+        txn.commit()?;
+    }
+
+    // Read transaction
+    {
+        let txn = env.begin_ro_txn()?;
+        let value = txn.get(db, b"key")?;
+        println!("Value: {:?}", String::from_utf8_lossy(value));
+    }
+
+    Ok(())
+}
+```
+
+## Crates
+
+| Crate | Description |
+|-------|-------------|
+| `lmdb-rkv` | High-level Rust API |
+| `lmdb-rkv-sys` | Low-level FFI bindings |
 
 ## Building from Source
 
 ```bash
-git clone --recursive git@github.com:mozilla/lmdb-rs.git
-cd lmdb-rs
+# Clone with submodules
+git clone --recursive https://github.com/ApiliumCode/lmdb-rs-apilium.git
+cd lmdb-rs-apilium
+
+# Build
 cargo build
+
+# Run tests
+cargo test
 ```
 
-## Publishing to crates.io
+## Performance
 
-To publish the lmdb-rkv-sys crate to crates.io:
+LMDB provides exceptional read performance through memory-mapped files:
 
-```bash
-git clone --recursive git@github.com:mozilla/lmdb-rs.git
-cd lmdb-rs/lmdb-sys
-# Update the version string in lmdb-sys/Cargo.toml and lmdb-sys/src/lib.rs.
-cargo publish
-git tag lmdb-rkv-sys-$VERSION # where $VERSION is the updated version string
-git push git@github.com:mozilla/lmdb-rs.git --tags
-```
+| Operation | Performance |
+|-----------|-------------|
+| Read | O(1) - Direct memory access |
+| Write | O(log n) - B+ tree insertion |
+| Iteration | Sequential disk access |
 
-To publish the lmdb-rkv crate to crates.io:
+## Part of AIngle
 
-```bash
-git clone --recursive git@github.com:mozilla/lmdb-rs.git
-cd lmdb-rs
-# Update the version string in Cargo.toml and src/lib.rs and temporarily change
-# the lmdb-rkv-sys dependency in Cargo.toml to the latest version on crates.io.
-cargo publish
-git tag $VERSION # where $VERSION is the updated version string
-git push git@github.com:mozilla/lmdb-rs.git --tags
-# Change the lmdb-rkv-sys dependency in Cargo.toml back to a path dependency
-# on the ./lmdb-sys directory.
-```
+This crate is part of the [AIngle](https://github.com/ApiliumCode/aingle) ecosystem - a Semantic DAG framework for IoT and distributed AI applications.
 
-## Features
+## License
 
-* [x] lmdb-sys.
-* [x] Cursors.
-* [x] Zero-copy put API.
-* [x] Nested transactions.
-* [x] Database statistics.
+Licensed under the Apache License, Version 2.0. See [LICENSE](LICENSE) for details.
+
+---
+
+<p align="center">
+  <sub>Maintained by <a href="https://apilium.com">Apilium Technologies</a> - Tallinn, Estonia</sub>
+</p>
