@@ -30,7 +30,7 @@ libc = "0.2"
 [build-dependencies]
 pkg-config = "0.3"
 cc = "1.0"
-bindgen = { version = "0.70", default-features = false, optional = true, features = ["runtime"] }
+bindgen = { version = "0.71", default-features = false, optional = true, features = ["runtime"] }
 
 [features]
 default = []

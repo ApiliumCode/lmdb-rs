@@ -124,6 +124,8 @@ impl fmt::Display for Error {
     }
 }
 
+impl std::error::Error for Error {}
+
 /// An LMDB result.
 pub type Result<T> = result::Result<T, Error>;
 
